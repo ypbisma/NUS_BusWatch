@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BusWatch</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="one">This is Tab 1</string>
+    <string name="two">This is Tab 2</string>
 </resources>
