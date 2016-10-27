@@ -13,6 +13,8 @@
     <string name="seconds_text">seconds</string>
     <string name="from_bus_stop">from</string>
     <string name="to_bus_stop">to</string>
+    <string name="using_bus_title">Using bus:</string>
+    <string name="bus_line">D2</string>
 
 
 

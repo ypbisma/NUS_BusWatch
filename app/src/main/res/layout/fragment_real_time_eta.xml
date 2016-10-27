@@ -124,6 +124,32 @@
 
     </LinearLayout>
 
+    <!--Divider-->
+    <View style="@style/Divider"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/using_bus_title"
+            android:textSize="20dp"
+            android:layout_gravity="center"/>
+
+        <ExpandableListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+        </ExpandableListView>
+
+    </LinearLayout>
+
 </LinearLayout>
 
 
