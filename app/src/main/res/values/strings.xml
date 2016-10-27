@@ -2,7 +2,21 @@
     <string name="app_name">BusWatch</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Strings for real time ETA screen -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="one">This is Tab 1</string>
+    <string name="real_time_ETA_title">Estimated time is</string>
+    <string name="real_time_ETA_minute_value">10</string>
+    <string name="minute_text">minute</string>
+    <string name="minutes_text">minutes</string>
+    <string name="second_text">second</string>
+    <string name="seconds_text">seconds</string>
+    <string name="from_bus_stop">from</string>
+    <string name="to_bus_stop">to</string>
+
+
+
+
+
     <string name="two">This is Tab 2</string>
 </resources>
