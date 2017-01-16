@@ -12,6 +12,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,7 +48,15 @@ public class BusTrackingFragment extends Fragment {
 
                 // For dropping a marker at a point on the Map
                 LatLng nus = new LatLng(1.2966, 103.7764);
-                googleMap.addMarker(new MarkerOptions().position(nus).title("Marker Title").snippet("Marker Description"));
+                LatLng holyCross = new LatLng(1.3077, 103.7708);
+
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blue_bus);
+
+
+                googleMap.addMarker(new MarkerOptions().position(nus).title("nus").snippet("Marker Description")
+                    .icon(icon));
+                googleMap.addMarker(new MarkerOptions().position(holyCross).title("holy cross").snippet("Marker Description"));
+
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(nus).zoom(12).build();
