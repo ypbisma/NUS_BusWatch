@@ -25,9 +25,11 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAUDyt1WJBPuhhAJl66c0dmNQ2D9K2fE4Q"/>
-
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCxn0YAy8BMl4osynbKH2EKbWwaGns17vw"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
 
     </application>
 </manifest>
