@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bisma.buswatch.model.BusInfo;
+import com.bisma.buswatch.service.APIService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -17,6 +19,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Retrofit;
 
 public class BusTrackingFragment extends Fragment {
 
@@ -89,5 +100,37 @@ public class BusTrackingFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    private void getBusInfo(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("localhost:8080/api")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        APIService service = retrofit.create(APIService.class);
+        Call<List<BusInfo>> call = service.getBusInfo();
+
+
+        call.enqueue(new Callback<List<BusInfo>>() {
+            @Override
+            public void onResponse(Call<List<BusInfo>> call, Response<List<BusInfo>> response) {
+                List<BusInfo> busInfoList = response.body();
+
+                String details = "";
+
+                for (int i = 0; i < busInfoList.size(); i++){
+                    String id = busInfoList.get(i).getId();
+
+                    details += "id: " + id;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BusInfo>> call, Throwable t) {
+
+            }
+        });
     }
 }
