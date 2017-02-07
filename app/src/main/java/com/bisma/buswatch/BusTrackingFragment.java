@@ -1,13 +1,16 @@
 package com.bisma.buswatch;
 
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bisma.buswatch.model.BusInfo;
+import com.bisma.buswatch.model.BusInfoList;
 import com.bisma.buswatch.service.APIService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +36,8 @@ public class BusTrackingFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
+    private final Handler handler = new Handler();
+    private final int delay = 1000; //milliseconds
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,10 +75,12 @@ public class BusTrackingFragment extends Fragment {
 
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(nus).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(nus).zoom(9).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+
+        drawMarker();
 
         return rootView;
     }
@@ -102,35 +109,49 @@ public class BusTrackingFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
+
     private void getBusInfo(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("localhost:8080/api")
+                .baseUrl("http://10.0.2.2:8080/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         APIService service = retrofit.create(APIService.class);
-        Call<List<BusInfo>> call = service.getBusInfo();
+        Call<BusInfoList> call = service.getBusInfo();
 
 
-        call.enqueue(new Callback<List<BusInfo>>() {
+        call.enqueue(new Callback<BusInfoList>() {
             @Override
-            public void onResponse(Call<List<BusInfo>> call, Response<List<BusInfo>> response) {
-                List<BusInfo> busInfoList = response.body();
+            public void onResponse(Call<BusInfoList> call, Response<BusInfoList> response) {
+                final List<BusInfo> busInfoList = response.body().getBus_infos();
 
-                String details = "";
-
-                for (int i = 0; i < busInfoList.size(); i++){
-                    String id = busInfoList.get(i).getId();
-
-                    details += "id: " + id;
-                }
-
+                mMapView.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        //BusInfo busInfo = busInfoList.get(0);
+                        for (int i = 0; i < busInfoList.size(); i++) {
+                            BusInfo busUnit = busInfoList.get(i);
+                            LatLng busCoordinate = new LatLng(Double.parseDouble(busUnit.getLatitude()), Double.parseDouble(busUnit.getLongitude()));
+                            googleMap.addMarker(new MarkerOptions().position(busCoordinate).title("bus unit " + i).snippet("Marker Description").rotation(Float.parseFloat(busUnit.getHeading())));
+                        }
+                    }
+                });
             }
 
             @Override
-            public void onFailure(Call<List<BusInfo>> call, Throwable t) {
-
+            public void onFailure(Call<BusInfoList> call, Throwable t) {
+                t.printStackTrace();
             }
         });
+    }
+
+    private void drawMarker() {
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                getBusInfo();
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
     }
 }
