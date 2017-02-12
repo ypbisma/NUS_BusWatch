@@ -1,6 +1,7 @@
 package com.bisma.buswatch;
 
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class BusTrackingFragment extends Fragment {
     private GoogleMap googleMap;
     private final Handler handler = new Handler();
     private final int delay = 1000; //milliseconds
+    private CountDownTimer timer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,12 +68,12 @@ public class BusTrackingFragment extends Fragment {
                 LatLng nus = new LatLng(1.2966, 103.7764);
                 LatLng holyCross = new LatLng(1.3077, 103.7708);
 
-                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blue_bus);
+//                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.blue_bus);
 
 
-                googleMap.addMarker(new MarkerOptions().position(nus).title("nus").snippet("Marker Description")
-                    .icon(icon));
-                googleMap.addMarker(new MarkerOptions().position(holyCross).title("holy cross").snippet("Marker Description"));
+//                googleMap.addMarker(new MarkerOptions().position(nus).title("nus").snippet("Marker Description")
+//                    .icon(icon));
+//                googleMap.addMarker(new MarkerOptions().position(holyCross).title("holy cross").snippet("Marker Description"));
 
 
                 // For zooming automatically to the location of the marker
@@ -80,10 +82,17 @@ public class BusTrackingFragment extends Fragment {
             }
         });
 
-        drawMarker();
 
         return rootView;
     }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+//        getBusInfo();
+        drawMarker();
+    }
+
 
     @Override
     public void onResume() {
@@ -132,7 +141,7 @@ public class BusTrackingFragment extends Fragment {
                         for (int i = 0; i < busInfoList.size(); i++) {
                             BusInfo busUnit = busInfoList.get(i);
                             LatLng busCoordinate = new LatLng(Double.parseDouble(busUnit.getLatitude()), Double.parseDouble(busUnit.getLongitude()));
-                            googleMap.addMarker(new MarkerOptions().position(busCoordinate).title("bus unit " + i).snippet("Marker Description").rotation(Float.parseFloat(busUnit.getHeading())));
+                            googleMap.addMarker(new MarkerOptions().position(busCoordinate).title("bus unit " + i).snippet("Marker Description").icon(BitmapDescriptorFactory.fromResource(R.drawable.bussideview)).rotation(Float.parseFloat(busUnit.getHeading())));
                         }
                     }
                 });
@@ -154,4 +163,5 @@ public class BusTrackingFragment extends Fragment {
             }
         }, delay);
     }
+
 }
